@@ -144,12 +144,78 @@
         let currentRaces = [];
         let filteredRaces = [];
 
+        // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
-            loadRaces();
+            // Create sample data if no races exist
+            const existingRaces = DataManager.getRaces();
+            if (existingRaces.length === 0) {
+                createSampleUpcomingRaces();
+            }
+            
             setupFilters();
+            loadRaces();
         });
 
+        function createSampleUpcomingRaces() {
+            const now = new Date();
+            const sampleRaces = [
+                {
+                    id: 'sample_1',
+                    name: 'Kentucky Derby Qualifier',
+                    track: 'Churchill Downs',
+                    date: new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days from now
+                    distance: 2000,
+                    raceNumber: 1,
+                    prizeMoney: 50000,
+                    horses: [
+                        { name: 'Thunder Strike', jockey: 'J. Smith', weight: '55.0', odds: '3.5', number: 1 },
+                        { name: 'Lightning Bolt', jockey: 'M. Johnson', weight: '54.5', odds: '4.2', number: 2 },
+                        { name: 'Storm Chaser', jockey: 'R. Williams', weight: '56.0', odds: '5.1', number: 3 },
+                        { name: 'Wind Runner', jockey: 'S. Brown', weight: '55.5', odds: '6.8', number: 4 }
+                    ],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 'sample_2',
+                    name: 'Belmont Stakes Prep',
+                    track: 'Belmont Park',
+                    date: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days from now
+                    distance: 2400,
+                    raceNumber: 2,
+                    prizeMoney: 75000,
+                    horses: [
+                        { name: 'Fire Spirit', jockey: 'T. Davis', weight: '54.0', odds: '2.8', number: 1 },
+                        { name: 'Golden Arrow', jockey: 'A. Miller', weight: '55.5', odds: '4.5', number: 2 },
+                        { name: 'Silver Bullet', jockey: 'C. Wilson', weight: '56.5', odds: '7.2', number: 3 },
+                        { name: 'Midnight Express', jockey: 'D. Moore', weight: '55.0', odds: '8.1', number: 4 },
+                        { name: 'Dawn Breaker', jockey: 'E. Taylor', weight: '54.5', odds: '9.5', number: 5 }
+                    ],
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: 'sample_3',
+                    name: 'Santa Anita Handicap',
+                    track: 'Santa Anita',
+                    date: new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
+                    distance: 1800,
+                    raceNumber: 3,
+                    prizeMoney: 100000,
+                    horses: [
+                        { name: 'Star Gazer', jockey: 'F. Anderson', weight: '57.0', odds: '3.2', number: 1 },
+                        { name: 'Ocean Wave', jockey: 'G. Thomas', weight: '55.5', odds: '4.8', number: 2 },
+                        { name: 'Mountain Peak', jockey: 'H. Jackson', weight: '56.0', odds: '6.5', number: 3 }
+                    ],
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            sampleRaces.forEach(race => {
+                DataManager.addRace(race);
+            });
+        }
+
         function loadRaces() {
+
             currentRaces = DataManager.getUpcomingRaces();
             filteredRaces = [...currentRaces];
             populateFilters();

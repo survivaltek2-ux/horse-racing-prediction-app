@@ -29,6 +29,17 @@ class DataManager {
         return races.find(race => race.id === id);
     }
 
+    static getUpcomingRaces() {
+        const races = this.getRaces();
+        const now = new Date();
+        
+        // Filter races that are in the future
+        return races.filter(race => {
+            const raceDate = new Date(race.date);
+            return raceDate > now;
+        }).sort((a, b) => new Date(a.date) - new Date(b.date)); // Sort by date ascending
+    }
+
     static updateRace(id, updates) {
         try {
             const races = this.getRaces();
