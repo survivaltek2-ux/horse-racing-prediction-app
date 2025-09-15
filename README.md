@@ -8,6 +8,7 @@ This is a static HTML version of the Horse Racing Prediction application, conver
 - **Race Management**: Add, view, and manage horse races
 - **Horse Management**: Add and manage horse information
 - **Predictions**: Generate predictions for races using a client-side algorithm
+- **Model Training**: Train prediction models with custom parameters and monitoring
 - **Statistics**: View comprehensive statistics and charts
 - **API Import**: Simulate importing races from external APIs
 - **History**: View past races and results
@@ -24,6 +25,7 @@ static-html/
 ├── history.html        # Race history and results
 ├── stats.html          # Statistics and charts
 ├── api_import.html     # API import simulation
+├── training.html       # Model training interface
 ├── css/
 │   └── style.css       # Custom styles
 ├── js/
@@ -84,6 +86,7 @@ After starting the local server, verify these features work:
 - ✅ Add new horses with form validation
 - ✅ View race history with filtering
 - ✅ Generate predictions for races
+- ✅ Model training interface and monitoring
 - ✅ View statistics and charts
 - ✅ API import simulation
 - ✅ Data export/import functionality

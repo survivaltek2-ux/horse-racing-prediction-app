@@ -53,9 +53,11 @@ validate_files() {
         "history.html"
         "stats.html"
         "api_import.html"
+        "training.html"
         "css/style.css"
         "js/main.js"
         "js/data-manager.js"
+        "js/app.js"
     )
     
     missing_files=()
@@ -96,6 +98,55 @@ create_package() {
     
     echo "✅ Created deployment package: $package_name"
     echo "📤 Upload this file to your static hosting service"
+}
+
+# Function to deploy to GitHub Pages
+deploy_github_pages() {
+    echo "🚀 Deploying to GitHub Pages..."
+    
+    # Check if git is available
+    if ! command -v git &> /dev/null; then
+        echo "❌ Git is not installed. Please install Git first."
+        return 1
+    fi
+    
+    # Check if we're in a git repository
+    if ! git rev-parse --git-dir > /dev/null 2>&1; then
+        echo "❌ Not a git repository. Please initialize git first:"
+        echo "   git init"
+        echo "   git remote add origin <your-github-repo-url>"
+        return 1
+    fi
+    
+    # Check for uncommitted changes
+    if ! git diff-index --quiet HEAD --; then
+        echo "📝 Found uncommitted changes. Adding and committing..."
+        git add .
+        git commit -m "Update static files for GitHub Pages deployment - $(date '+%Y-%m-%d %H:%M:%S')"
+    else
+        echo "✅ No uncommitted changes found"
+    fi
+    
+    # Push to main branch
+    echo "📤 Pushing to GitHub..."
+    if git push origin main; then
+        echo "✅ Successfully pushed to GitHub!"
+        echo ""
+        echo "🌐 Your site should be available at:"
+        echo "   https://<username>.github.io/<repository-name>/"
+        echo ""
+        echo "📋 To enable GitHub Pages (if not already enabled):"
+        echo "   1. Go to your repository on GitHub"
+        echo "   2. Click on 'Settings' tab"
+        echo "   3. Scroll down to 'Pages' section"
+        echo "   4. Under 'Source', select 'Deploy from a branch'"
+        echo "   5. Select 'main' branch and '/ (root)' folder"
+        echo "   6. Click 'Save'"
+        echo ""
+    else
+        echo "❌ Failed to push to GitHub. Please check your remote configuration."
+        return 1
+    fi
 }
 
 # Function to show deployment instructions
@@ -142,6 +193,9 @@ case "${1:-menu}" in
     "package"|"zip")
         validate_files && create_package
         ;;
+    "github"|"pages")
+        validate_files && deploy_github_pages
+        ;;
     "info"|"deploy")
         show_deployment_info
         ;;
@@ -152,11 +206,13 @@ case "${1:-menu}" in
         echo "  serve     Start local development server"
         echo "  validate  Check if all required files are present"
         echo "  package   Create deployment package (zip file)"
+        echo "  github    Deploy to GitHub Pages"
         echo "  info      Show deployment information"
         echo ""
         echo "Examples:"
         echo "  $0 serve      # Start local server"
         echo "  $0 package    # Create deployment zip"
+        echo "  $0 github     # Deploy to GitHub Pages"
         echo "  $0 info       # Show deployment options"
         ;;
 esac

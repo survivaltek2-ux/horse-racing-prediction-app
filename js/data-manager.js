@@ -121,6 +121,25 @@ class DataManager {
         }
     }
 
+    static makePrediction(raceId) {
+        const race = this.getRaceById(raceId);
+        if (!race || !race.horses || race.horses.length === 0) {
+            console.error('Cannot make prediction: Race not found or no horses');
+            return null;
+        }
+
+        // Generate predictions using the existing generatePrediction method
+        const predictions = this.generatePrediction(race);
+        
+        if (!predictions || predictions.length === 0) {
+            console.error('Failed to generate predictions');
+            return null;
+        }
+
+        // Save the prediction using addPrediction method
+        return this.addPrediction(raceId, predictions);
+    }
+
     static getPredictions() {
         const races = this.getRaces();
         return races.filter(race => race.predictions && race.predictions.length > 0);
