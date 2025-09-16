@@ -486,11 +486,8 @@
                                 <button class="btn btn-outline-primary btn-sm me-2" onclick="viewRaceDetails(${race.id})">
                                     <i class="fas fa-eye me-1"></i>View Details
                                 </button>
-                                <button class="btn btn-primary btn-sm me-2" onclick="makePrediction(${race.id})">
+                                <button class="btn btn-primary btn-sm" onclick="makePrediction(${race.id})">
                                     <i class="fas fa-chart-line me-1"></i>Predict
-                                </button>
-                                <button class="btn btn-info btn-sm" onclick="makeAIPrediction(${race.id})">
-                                    <i class="fas fa-brain me-1"></i>AI Predict
                                 </button>
                             </div>
                         </div>
@@ -645,59 +642,6 @@
                     bsAlert.close();
                 }
             }, 5000);
-        }
-
-        // AI Prediction Function
-        async function makeAIPrediction(raceId) {
-            const race = DataManager.getRaceById(raceId);
-            if (!race || !race.horses || race.horses.length === 0) {
-                alert('Cannot make AI prediction: No horses registered for this race.');
-                return;
-            }
-
-            // Show progress modal
-            const progressModal = new bootstrap.Modal(document.getElementById('predictionProgressModal'));
-            progressModal.show();
-
-            try {
-                // Simulate AI prediction steps with enhanced progress updates
-                await updateProgress(10, 'Initializing AI models...', 'Loading neural networks and deep learning models...');
-                await updateProgress(25, 'Analyzing horse performance data...', 'Processing historical race data with AI algorithms...');
-                await updateProgress(40, 'Running neural network analysis...', 'Deep learning models analyzing form patterns...');
-                await updateProgress(55, 'Processing LSTM sequence models...', 'Analyzing temporal patterns and trends...');
-                await updateProgress(70, 'Applying ensemble AI models...', 'Combining multiple AI predictions for accuracy...');
-                await updateProgress(85, 'Generating AI insights...', 'Creating explanations and confidence scores...');
-                await updateProgress(95, 'Finalizing AI predictions...', 'Optimizing results with advanced algorithms...');
-
-                // Generate enhanced AI prediction
-                const aiPrediction = DataManager.generateAIPrediction(race);
-                
-                await updateProgress(100, 'AI Prediction complete!', 'Successfully generated AI-enhanced race predictions.');
-
-                // Hide progress modal
-                setTimeout(() => {
-                    progressModal.hide();
-                }, 1000);
-
-                if (aiPrediction) {
-                    // Save the AI prediction
-                    DataManager.addPrediction(raceId, aiPrediction);
-                    showSuccessAlert('🧠 AI Prediction generated successfully! Enhanced with neural networks and deep learning.');
-                    
-                    // Refresh the races display
-                    loadRaces();
-                    
-                    if (confirm('Would you like to view the AI prediction results now?')) {
-                        window.location.href = `prediction_results.html?id=${aiPrediction.id}`;
-                    }
-                } else {
-                    showErrorAlert('Failed to generate AI prediction. Please try again.');
-                }
-            } catch (error) {
-                progressModal.hide();
-                showErrorAlert('An error occurred while generating the AI prediction.');
-                console.error('AI Prediction error:', error);
-            }
         }
 
         function showErrorAlert(message) {
